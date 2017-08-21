@@ -2,6 +2,38 @@
 
 An internal API for a national healthcare provider (a code challenge).
 
+[Deployed Application]() 
+
+## Run Locally
+
+## Implementation Notes
+
+#### Provider Schema
+
+```rb
+  create_table "providers", force: :cascade do |t|
+    t.string "provider_name"
+    t.string "provider_street_address"
+    t.string "provider_city"
+    t.string "provider_state"
+    t.string "provider_zip_code"
+    t.string "hospital_referral_region_description"
+    t.integer "total_discharges"
+    t.string "average_covered_charges"
+    t.string "average_total_payments"
+    t.string "average_medicare_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+```
+
+As there was a direct match between the naming of things like `:provider_street_address' as a header in the CSV and `Provider Street Address` as a key in the expected output - I chose to keep that naming convention in the database columns.
+
+If this project were to expand, I would consider:
+- refactoring out references to 'provider' in table names
+- spliting address into it's own table
+- storing `provider_id` for deduplication accross multiple CSVs
+
 ## Requirements
 
 - [Data Set CSV](https://s3-us-west-2.amazonaws.com/bain-coding-challenge/Inpatient_Prospective_Payment_System__IPPS__Provider_Summary_for_the_Top_100_Diagnosis-Related_Groups__DRG__-_FY2011.csv)
