@@ -1,3 +1,6 @@
+# Ignore local data files
+data/
+
 # Ignore development notes
 Notes.md
 
