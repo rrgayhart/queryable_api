@@ -10,6 +10,7 @@ gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 
 group :development, :test do
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'factory_girl_rails'
   gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
