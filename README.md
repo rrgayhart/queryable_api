@@ -24,35 +24,35 @@ GET /providers?max_discharges=70&min_discharges=68&max_average_covered_charges=5
 
 ```json
 {
-  meta: {
-    total: 2,
-    max_shown: 100,
-    page: "1"
+  "meta": {
+    "total": 2,
+    "max_shown": 100,
+    "page": "1"
   },
-  data: [
+  "data": [
     {
-      Provider Name: "SPALDING REGIONAL MEDICAL CENTER",
-      Provider Street Address: "601 SOUTH 8TH STREET",
-      Provider City: "GRIFFIN",
-      Provider State: "GA",
-      Provider Zip Code: "30223",
-      Hospital Referral Region Description: "GA - Atlanta",
-      Total Discharges: 68,
-      Average Covered Charges: "$45,824.38",
-      Average Total Payments: "$9,260.82",
-      Average Medicare Payments: "$8,049.48"
+      "Provider Name": "SPALDING REGIONAL MEDICAL CENTER",
+      "Provider Street Address": "601 SOUTH 8TH STREET",
+      "Provider City": "GRIFFIN",
+      "Provider State": "GA",
+      "Provider Zip Code": "30223",
+      "Hospital Referral Region Description": "GA - Atlanta",
+      "Total Discharges": 68,
+      "Average Covered Charges": "$45,824.38",
+      "Average Total Payments": "$9,260.82",
+      "Average Medicare Payments": "$8,049.48"
     },
     {
-      Provider Name: "EMORY EASTSIDE MEDICAL CENTER",
-      Provider Street Address: "1700 MEDICAL WAY",
-      Provider City: "SNELLVILLE",
-      Provider State: "GA",
-      Provider Zip Code: "30078",
-      Hospital Referral Region Description: "GA - Atlanta",
-      Total Discharges: 68,
-      Average Covered Charges: "$46,777.98",
-      Average Total Payments: "$8,796.27",
-      Average Medicare Payments: "$7,899.88"
+      "Provider Name": "EMORY EASTSIDE MEDICAL CENTER",
+      "Provider Street Address": "1700 MEDICAL WAY",
+      "Provider City": "SNELLVILLE",
+      "Provider State": "GA",
+      "Provider Zip Code": "30078",
+      "Hospital Referral Region Description": "GA - Atlanta",
+      "Total Discharges": 68,
+      "Average Covered Charges": "$46,777.98",
+      "Average Total Payments": "$8,796.27",
+      "Average Medicare Payments": "$7,899.88"
     }
   ]
 }
