@@ -121,6 +121,7 @@ rspec
   - [rspec](http://rspec.info/) through the [rspec-rails](https://github.com/rspec/rspec-rails) gem
   - [factory_girl_rails](https://github.com/thoughtbot/factory_girl_rails) 
   - [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
+- API
   - [jbuilder](https://github.com/rails/jbuilder)
   - [will-paginate](https://github.com/mislav/will_paginate)
 
