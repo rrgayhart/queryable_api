@@ -21,5 +21,4 @@ CSV.foreach(open(url), headers: true) do |row|
   populate_header_attribute_pairs(provider, row) if @provider_header_attribute_pairs.empty?
   @provider_header_attribute_pairs.each { |k, v| provider[k] = row[v] }
   provider.save
-  puts provider.id
 end

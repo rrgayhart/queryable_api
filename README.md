@@ -2,13 +2,70 @@
 
 An internal API for a national healthcare provider (a code challenge).
 
-[Deployed Application]() 
+[Deployed Application](https://queryable-api-challenge.herokuapp.com/) 
 
-## Run Locally
+## Getting Started
+
+### Prerequisites
+
+You will need to have `Rails 5` and `Ruby 2.4.1` and `PostgreSQL` up and running in order to run this application locally.
+
+If you're unfamiliar with Ruby or Rails, [check out the Rails Getting Started Documentation](http://guides.rubyonrails.org/getting_started.html)
+
+### Installing
+
+Pull down this repository
+
+```
+git@github.com:rrgayhart/queryable_api.git
+```
+
+Install dependencies
+
+```
+bundle install
+```
+
+Set up the database
+
+Note: running `rake db:seed` will require an internet connection and will take some time.
+
+```
+rake db:create
+rake db:migrate
+rake db:test:prepare
+```
+
+Run the tests
+
+```
+rspec
+```
+
+Start the server
+
+```
+rails s
+```
 
 ## Implementation Notes
 
+#### Technology Used
+
+- Language
+  - [Ruby](https://www.ruby-lang.org) 2.4.1
+- Framework
+  - [Rails](http://rubyonrails.org/) ~> 5.1.2
+- Database
+  - [PostgreSQL](https://www.postgresql.org/) through the [pg gem](https://rubygems.org/gems/pg/versions/0.18.4) (still using Active Record as the ORM)
+- Testing
+  - [rspec](http://rspec.info/) through the [rspec-rails](https://github.com/rspec/rspec-rails) gem
+  - [factory_girl_rails](https://github.com/thoughtbot/factory_girl_rails) 
+  - [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
+
 #### Provider Schema
+
+Data was provided in the form for this [Data Set CSV](https://s3-us-west-2.amazonaws.com/bain-coding-challenge/Inpatient_Prospective_Payment_System__IPPS__Provider_Summary_for_the_Top_100_Diagnosis-Related_Groups__DRG__-_FY2011.csv)
 
 ```rb
   create_table "providers", force: :cascade do |t|
@@ -33,6 +90,12 @@ If this project were to expand, I would consider:
 - refactoring out references to 'provider' in table names
 - spliting address into it's own table
 - storing `provider_id` for deduplication accross multiple CSVs
+
+#### Deploying to Heroku
+
+I chose to try and seed the CSV data directly from the [link provided](https://s3-us-west-2.amazonaws.com/bain-coding-challenge/Inpatient_Prospective_Payment_System__IPPS__Provider_Summary_for_the_Top_100_Diagnosis-Related_Groups__DRG__-_FY2011.csv) rather than including the CSV in the project git history.
+
+I was able to run the CSV seeding process in a [detached state](https://devcenter.heroku.com/articles/one-off-dynos#running-tasks-in-background) to try and avoid timeouts using: `heroku run:detached rake db:seed`.
 
 ## Requirements
 
