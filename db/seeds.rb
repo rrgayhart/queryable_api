@@ -16,9 +16,16 @@ end
 # Depending on Heroku speed - may need to use Rails.root.join('data', 'data_subset.csv')
 # And source control actual csv
 
-CSV.foreach(open(url), headers: true) do |row|
+# CSV.foreach(open(url), headers: true) do |row|
+CSV.foreach(Rails.root.join('data', 'data_subset.csv'), headers: true) do |row|
   provider = Provider.new()
   populate_header_attribute_pairs(provider, row) if @provider_header_attribute_pairs.empty?
-  @provider_header_attribute_pairs.each { |k, v| provider[k] = row[v] }
+  @provider_header_attribute_pairs.each do |k, v|
+    if ['average_covered_charges', 'average_total_payments', 'average_medicare_payments'].include?(k)
+      provider[k] = row[v].gsub(/[$|,]/, '')
+    else
+      provider[k] = row[v] 
+    end
+  end
   provider.save
 end
