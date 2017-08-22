@@ -9,6 +9,7 @@ gem 'rails', '~> 5.1.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'jbuilder'
+gem 'will_paginate', '~> 3.1.0'
 
 group :development, :test do
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
