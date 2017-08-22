@@ -4,6 +4,61 @@ An internal API for a national healthcare provider (a code challenge).
 
 [Deployed Application](https://queryable-api-challenge.herokuapp.com/) 
 
+![gif of working application](http://g.recordit.co/OBnD8hF54o.gif)
+
+## Accessing the API
+
+| Parameter                       | Description                               |
+|---------------------------------|-------------------------------------------|
+| `max_discharges`                | The maximum number of Total Discharges    |
+| `min_discharges`                | The minimum number of Total Discharges    |
+| `max_average_covered_charges`   | The maximum Average Covered Charges       | 
+| `min_average_covered_charges`   | The minimum Average Covered Charges       |
+| `max_average_medicare_payments` | The maximum Average Medicare Payment      |
+| `min_average_medicare_payments` | The minimum Average Medicare Payment      |
+| `state`                         | The exact state that the provider is from |
+
+```
+GET /providers?max_discharges=70&min_discharges=68&max_average_covered_charges=50000&min_average_covered_charges=45000&min_average_medicare_payments=6000&max_average_medicare_payments=10000&state=GA
+```
+
+```json
+{
+  meta: {
+    total: 2,
+    max_shown: 100,
+    page: "1"
+  },
+  data: [
+    {
+      Provider Name: "SPALDING REGIONAL MEDICAL CENTER",
+      Provider Street Address: "601 SOUTH 8TH STREET",
+      Provider City: "GRIFFIN",
+      Provider State: "GA",
+      Provider Zip Code: "30223",
+      Hospital Referral Region Description: "GA - Atlanta",
+      Total Discharges: 68,
+      Average Covered Charges: "$45,824.38",
+      Average Total Payments: "$9,260.82",
+      Average Medicare Payments: "$8,049.48"
+    },
+    {
+      Provider Name: "EMORY EASTSIDE MEDICAL CENTER",
+      Provider Street Address: "1700 MEDICAL WAY",
+      Provider City: "SNELLVILLE",
+      Provider State: "GA",
+      Provider Zip Code: "30078",
+      Hospital Referral Region Description: "GA - Atlanta",
+      Total Discharges: 68,
+      Average Covered Charges: "$46,777.98",
+      Average Total Payments: "$8,796.27",
+      Average Medicare Payments: "$7,899.88"
+    }
+  ]
+}
+
+```
+
 ## Getting Started
 
 ### Prerequisites
@@ -36,17 +91,21 @@ rake db:migrate
 rake db:test:prepare
 ```
 
+Start the server
+
+```
+rails s
+```
+
+### Testing
+
 Run the tests
 
 ```
 rspec
 ```
 
-Start the server
-
-```
-rails s
-```
+![tests running](http://g.recordit.co/Hic02GDrjx.gif)
 
 ## Implementation Notes
 
@@ -62,26 +121,27 @@ rails s
   - [rspec](http://rspec.info/) through the [rspec-rails](https://github.com/rspec/rspec-rails) gem
   - [factory_girl_rails](https://github.com/thoughtbot/factory_girl_rails) 
   - [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
+  - [jbuilder](https://github.com/rails/jbuilder)
+  - [will-paginate](https://github.com/mislav/will_paginate)
 
 #### Provider Schema
 
 Data was provided in the form for this [Data Set CSV](https://s3-us-west-2.amazonaws.com/bain-coding-challenge/Inpatient_Prospective_Payment_System__IPPS__Provider_Summary_for_the_Top_100_Diagnosis-Related_Groups__DRG__-_FY2011.csv)
 
 ```rb
-  create_table "providers", force: :cascade do |t|
-    t.string "provider_name"
-    t.string "provider_street_address"
-    t.string "provider_city"
-    t.string "provider_state"
-    t.string "provider_zip_code"
-    t.string "hospital_referral_region_description"
-    t.integer "total_discharges"
-    t.string "average_covered_charges"
-    t.string "average_total_payments"
-    t.string "average_medicare_payments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+    create_table :providers do |t|
+      t.string :provider_name
+      t.string :provider_street_address
+      t.string :provider_city
+      t.string :provider_state
+      t.string :provider_zip_code
+      t.string :hospital_referral_region_description
+      t.integer :total_discharges
+      t.decimal :average_covered_charges, :precision => 10, :scale => 2, :default => 0.0
+      t.decimal :average_total_payments, :precision => 10, :scale => 2, :default => 0.0
+      t.decimal :average_medicare_payments, :precision => 10, :scale => 2, :default => 0.0
+      t.timestamps
+    end
 ```
 
 As there was a direct match between the naming of things like `:provider_street_address' as a header in the CSV and `Provider Street Address` as a key in the expected output - I chose to keep that naming convention in the database columns.
@@ -97,67 +157,12 @@ I chose to try and seed the CSV data directly from the [link provided](https://s
 
 I was able to run the CSV seeding process in a [detached state](https://devcenter.heroku.com/articles/one-off-dynos#running-tasks-in-background) to try and avoid timeouts using: `heroku run:detached rake db:seed`.
 
-## Requirements
+## Deviations from the Requirements
 
-- [Data Set CSV](https://s3-us-west-2.amazonaws.com/bain-coding-challenge/Inpatient_Prospective_Payment_System__IPPS__Provider_Summary_for_the_Top_100_Diagnosis-Related_Groups__DRG__-_FY2011.csv)
+#### Pagination
 
-- An API endpoint that implements the url ending with `/providers`
-- Every possible combination of query string parameters works
-- Some datastore is used
-- Your API returns valid JSON
-- Automated tests (i.e. tests that can be run from command line)
-- A writeup/README describing your architecture, solutions, and assumptions made. Be as thorough as possible with your explination.
-- Deployed
-- If you're having problems with database size on Heroku, use a smaller subset of the data and indicate it in your writeup. Also provide example queries to this
+  Given the large quantity of records, a general query could return 163065 records. This would be an enormous response, so I paginated the responses and allowed the query to include a page parameter. Top level keys on the API responses are 'data' and 'meta' to reflect the total number of records/current page/etc.
 
-## API:
+#### Endpoints
 
-```
-GET /providers?max_discharges=5&min_discharges=6&max_average_covered_charges=50000
-&min_average_covered_charges=40000&min_average_medicare_payments=6000
-&max_average_medicare_payments=10000&state=GA
-```
-
-| Parameter                       | Description                               |
-|---------------------------------|-------------------------------------------|
-| `max_discharges`                | The maximum number of Total Discharges    |
-| `min_discharges`                | The minimum number of Total Discharges    |
-| `max_average_covered_charges`   | The maximum Average Covered Charges       | 
-| `min_average_covered_charges`   | The minimum Average Covered Charges       |
-| `max_average_medicare_payments` | The maximum Average Medicare Payment      |
-| `min_average_medicare_payments` | The minimum Average Medicare Payment      |
-| `state`                         | The exact state that the provider is from |
-
-
-#### The expected response is a JSON blob containing the list of providers meeting the criteria.  All query parameters are optional.  Min and Max fields are inclusive
-
-```json
-[
-  {
-    "Provider Name": "SOUTHEAST ALABAMA MEDICAL CENTER",
-    "Provider Street Address": "1108 ROSS CLARK CIRCLE",
-    "Provider City": "DOTHAN",
-    "Provider State": "AL",
-    "Provider Zip Code": "36301", 
-    "Hospital Referral Region Description": "AL - Dothan",
-    "Total Discharges": 91,
-    "Average Covered Charges": "$32,963.07", 
-    "Average Total Payments":   "$5,777.24",
-    "Average Medicare Payments": "$4,763.73"
-  },
-  {
-    "Provider Name": "MARSHALL MEDICAL CENTER SOUTH",
-    "Provider Street Address": "2505 U S HIGHWAY 431 NORTH",
-    "Provider City": "BOAZ",
-    "Provider State": "AL",
-    "Provider Zip Code": "35957", 
-    "Hospital Referral Region Description": "AL - Birmingham",
-    "Total Discharges": 14,
-    "Average Covered Charges": "$32,963.07", 
-    "Average Total Payments":   "$5,777.24",
-    "Average Medicare Payments": "$4,763.73"
-  }
-  
-]
-
-```
+  The spec requires `/providers` endpoint (which is present) - but I namespaced the controller and view under `api/v1` and provided a namespaced endpoint. I also routed the root to the providers index so as not to confuse anyone visiting the heroku site. A more elegant solution would probably have been to provide a splash page for the API with instructions for use and links to provided endpoints at the root.

@@ -60,11 +60,11 @@ RSpec.describe Provider, type: :model do
       end
     end
 
-    describe 'by_provider_state' do
+    describe 'state' do
       it 'filters by state' do
-        expect(Provider.by_provider_state('GA').length).to eq(2)
-        expect(Provider.by_provider_state('PA').length).to eq(1)
-        expect(Provider.by_provider_state('NV').length).to eq(0)
+        expect(Provider.state('GA').length).to eq(2)
+        expect(Provider.state('PA').length).to eq(1)
+        expect(Provider.state('NV').length).to eq(0)
       end
     end
   end
