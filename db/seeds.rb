@@ -16,8 +16,7 @@ end
 # Depending on Heroku speed - may need to use Rails.root.join('data', 'data_subset.csv')
 # And source control actual csv
 
-# CSV.foreach(open(url), headers: true) do |row|
-CSV.foreach(Rails.root.join('data', 'data_subset.csv'), headers: true) do |row|
+CSV.foreach(open(url), headers: true) do |row|
   provider = Provider.new()
   populate_header_attribute_pairs(provider, row) if @provider_header_attribute_pairs.empty?
   @provider_header_attribute_pairs.each do |k, v|
