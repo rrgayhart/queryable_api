@@ -145,7 +145,7 @@ Data was provided in the form for this [Data Set CSV](https://s3-us-west-2.amazo
     end
 ```
 
-As there was a direct match between the naming of things like `:provider_street_address' as a header in the CSV and `Provider Street Address` as a key in the expected output - I chose to keep that naming convention in the database columns.
+As there was a direct match between the naming of things like `:provider_street_address` as a header in the CSV and `Provider Street Address` as a key in the expected output - I chose to keep that naming convention in the database columns.
 
 If this project were to expand, I would consider:
 - refactoring out references to 'provider' in table names
