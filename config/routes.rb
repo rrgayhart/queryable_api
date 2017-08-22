@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'api/v1/providers#index', :defaults => { :format => 'json' }
+  get '/providers' => 'api/v1/providers#index', :defaults => { :format => 'json' }
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :providers, only: [:index]
+    end
+  end
 end

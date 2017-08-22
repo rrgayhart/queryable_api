@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20170821220304) do
     t.string "provider_zip_code"
     t.string "hospital_referral_region_description"
     t.integer "total_discharges"
-    t.string "average_covered_charges"
-    t.string "average_total_payments"
-    t.string "average_medicare_payments"
+    t.decimal "average_covered_charges", precision: 10, scale: 2, default: "0.0"
+    t.decimal "average_total_payments", precision: 10, scale: 2, default: "0.0"
+    t.decimal "average_medicare_payments", precision: 10, scale: 2, default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
